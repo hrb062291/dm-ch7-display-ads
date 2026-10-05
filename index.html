@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Display Advertising — Chapter 7</title>
+<meta name="description" content="Chapter 7 study companion: ad networks, CPM/CPC/CPA bidding, audience targeting, retargeting research and consistent messaging.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f8fb; --surface:#ffffff; --surface-2:#eef2f7; --ink:#0f1f3a; --ink-2:#44526b; --muted:#6b778c;
+  --line:#dbe2ec; --brand:#0b2a55; --accent:#1f7ae0; --accent-soft:#e3efff; --good:#1a8a5a; --good-soft:#e2f5ec;
+  --bad:#c23b3b; --bad-soft:#fbe7e7; --warn:#b7791f; --warn-soft:#fdf3e1; --bar-a:#94a3b8; --bar-b:#1f7ae0;
+  --radius:14px; --shadow:0 1px 2px rgba(15,31,58,.06),0 4px 16px rgba(15,31,58,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1220; --surface:#121b2d; --surface-2:#1a2540; --ink:#e7edf7; --ink-2:#b4c0d4; --muted:#8a97ad;
+    --line:#26324b; --brand:#9cc3ff; --accent:#5aa2ff; --accent-soft:#16294a; --good:#4cc98f; --good-soft:#123326;
+    --bad:#ff7b7b; --bad-soft:#3a1717; --warn:#f0b955; --warn-soft:#3a2b10; --bar-a:#64748b; --bar-b:#5aa2ff;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --surface:#121b2d; --surface-2:#1a2540; --ink:#e7edf7; --ink-2:#b4c0d4; --muted:#8a97ad;
+  --line:#26324b; --brand:#9cc3ff; --accent:#5aa2ff; --accent-soft:#16294a; --good:#4cc98f; --good-soft:#123326;
+  --bad:#ff7b7b; --bad-soft:#3a1717; --warn:#f0b955; --warn-soft:#3a2b10; --bar-a:#64748b; --bar-b:#5aa2ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:16px;height:56px}
+.logo{font-weight:800;color:var(--brand);text-decoration:none;white-space:nowrap}
+nav.toc{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1}
+nav.toc::-webkit-scrollbar{display:none}
+nav.toc a{color:var(--ink-2);text-decoration:none;font-size:14px;font-weight:500;padding:6px 10px;border-radius:8px;white-space:nowrap}
+nav.toc a:hover,nav.toc a.on{background:var(--surface-2);color:var(--ink)}
+.theme-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;height:34px;width:34px;cursor:pointer;flex:none}
+.hero{padding:64px 0 40px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.05;margin:8px 0 16px;color:var(--brand);letter-spacing:-.02em}
+.lede{font-size:19px;color:var(--ink-2);max-width:680px;margin:0}
+.objectives{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:32px}
+.obj{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.obj b{display:block;font-size:13px;color:var(--accent);margin-bottom:4px}
+section{padding:48px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(26px,4vw,34px);margin:0 0 8px;letter-spacing:-.01em}
+h3{font-size:18px;margin:0 0 6px}
+.sub{color:var(--ink-2);max-width:720px;margin:0 0 24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.key{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;margin:20px 0 0;font-weight:500}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--ink-2)}
+svg text{fill:var(--ink);font-family:Inter,system-ui,sans-serif}
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:14px;overflow-x:auto}
+/* calculator */
+.calc{overflow-x:auto}
+table.bids{width:100%;border-collapse:collapse;min-width:560px;font-variant-numeric:tabular-nums}
+table.bids th,table.bids td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right}
+table.bids th:first-child,table.bids td:first-child{text-align:left;color:var(--ink-2);font-weight:500}
+table.bids thead th{background:var(--brand);color:#fff;font-weight:600}
+:root[data-theme="dark"] table.bids thead th{color:#0b1220}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) table.bids thead th{color:#0b1220}}
+table.bids input{width:88px;text-align:right;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+tr.out td{font-weight:600}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:700}
+.badge.pos{background:var(--good-soft)} .badge.neg{background:var(--bad-soft)}
+.cpm-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:16px}
+.cpm-row input[type=range]{flex:1;min-width:180px;accent-color:var(--accent)}
+.cpm-val{font-weight:800;font-size:22px;min-width:84px;color:var(--brand)}
+.btn{font:inherit;font-weight:600;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:10px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+/* targeting */
+.tgt h3{display:flex;align-items:center;gap:8px}
+.tgt p{margin:0;color:var(--ink-2);font-size:15px}
+.tgt .eg{margin-top:8px;font-size:14px;color:var(--muted)}
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:8px;align-items:center}
+.funnel div{background:var(--accent);color:#fff;border-radius:10px;padding:10px;text-align:center;font-weight:600}
+/* rubric */
+.rubric-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.stars{display:flex;gap:4px}
+.stars button{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-weight:700;cursor:pointer}
+.stars button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.verdict{margin-top:14px;font-weight:600}
+/* charts */
+.chart-wrap{width:100%}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--ink-2);margin-top:8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.toggle button{font:inherit;font-size:14px;font-weight:600;border:0;background:var(--surface);color:var(--ink-2);padding:8px 14px;cursor:pointer}
+.toggle button.on{background:var(--accent);color:#fff}
+.thought{background:var(--surface-2);border-radius:18px;padding:16px 18px;font-style:italic;position:relative}
+/* 2x2 */
+.matrix{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;font-size:14px}
+.matrix .h{font-weight:700;color:var(--ink-2);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px}
+.matrix .c{border-radius:12px;padding:16px;text-align:center;font-weight:700;font-size:18px}
+.matrix .c small{display:block;font-weight:500;font-size:13px;color:var(--ink-2);margin-top:4px}
+.c.base{background:var(--surface-2)} .c.up{background:var(--good-soft);color:var(--good)} .c.zero{background:var(--bad-soft);color:var(--bad)}
+/* messaging */
+.acronym{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.acronym span{background:var(--brand);color:var(--bg);font-weight:800;border-radius:8px;width:38px;height:44px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.acronym-words{color:var(--ink-2)}
+.acronym-words b{color:var(--ink)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.check input{width:20px;height:20px;accent-color:var(--good);margin-top:2px;flex:none}
+.mock-ad{border-radius:12px;padding:18px;color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(160deg,#2a5fb0,#57b6e8)}
+.mock-ad .tag{font-size:11px;opacity:.8;letter-spacing:.06em;text-transform:uppercase}
+.mock-ad .big{font-size:24px;font-weight:800;line-height:1.1}
+.mock-ad .cta{align-self:flex-start;background:#fff;color:#1b3d73;font-weight:700;font-size:13px;padding:6px 12px;border-radius:6px}
+details{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-top:10px}
+summary{cursor:pointer;padding:12px 16px;font-weight:600}
+details > div{padding:0 16px 14px;color:var(--ink-2)}
+/* tree */
+.tree ul{list-style:none;margin:0;padding-left:18px;border-left:2px solid var(--line)}
+.tree > ul{padding-left:0;border:0}
+.tree li{padding:3px 0 3px 10px;position:relative}
+.tree li.cat > span{font-weight:700}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tabs button{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);padding:7px 12px;border-radius:99px;cursor:pointer}
+.tabs button.on{background:var(--brand);border-color:var(--brand);color:var(--bg)}
+/* quiz */
+.q{margin-bottom:18px}
+.q p{font-weight:600;margin:0 0 8px}
+.opts{display:grid;gap:8px}
+.opts button{font:inherit;text-align:left;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.opts button:hover:not(:disabled){border-color:var(--accent)}
+.opts button.right{background:var(--good-soft);border-color:var(--good)}
+.opts button.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opts button:disabled{cursor:default}
+.why{font-size:14px;color:var(--ink-2);margin-top:8px;display:none}
+.score{font-weight:800;font-size:20px}
+dl.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0}
+dl.terms div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+dl.terms dt{font-weight:700}
+dl.terms dd{margin:4px 0 0;color:var(--ink-2);font-size:15px}
+.update{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:10px;padding:12px 16px;margin-top:16px;font-size:15px}
+footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+@media (max-width:640px){
+  .hero{padding:40px 0 24px}
+  section{padding:36px 0}
+  .matrix .c{font-size:15px;padding:12px 8px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">Ch 7</a>
+    <nav class="toc" id="toc">
+      <a href="#networks">Networks</a>
+      <a href="#bids">Bids</a>
+      <a href="#targeting">Targeting</a>
+      <a href="#copy">Ad copy</a>
+      <a href="#retargeting">Retargeting</a>
+      <a href="#effectiveness">Effectiveness</a>
+      <a href="#messaging">Messaging</a>
+      <a href="#audiences">Audiences</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">◐</button>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap hero">
+  <div class="eyebrow">Digital Marketing · Chapter 7</div>
+  <h1>Display Advertising</h1>
+  <p class="lede">Search ads reach people who are already looking. Display ads reach people who aren't looking yet. This page covers how the auction works, who to target, what makes an ad worth clicking, and what the research says about retargeting.</p>
+  <div class="objectives">
+    <div class="obj"><b>Objective 1</b>Describe the role of publishers and advertisers in an ad network</div>
+    <div class="obj"><b>Objective 2</b>Distinguish among CPC, CPM and CPA bidding</div>
+    <div class="obj"><b>Objective 3</b>Use Google Ads to identify target audiences</div>
+    <div class="obj"><b>Objective 4</b>Design a test to find which of two ads works better</div>
+  </div>
+</div>
+
+<!-- NETWORKS -->
+<section id="networks"><div class="wrap">
+  <h2>Ad networks</h2>
+  <p class="sub">Millions of publishers have ad space. Millions of advertisers want attention. Instead of billions of one-to-one deals, each side works with one network, which runs an auction every time a page loads.</p>
+  <div class="card">
+    <svg viewBox="0 0 760 260" class="chart-wrap" role="img" aria-label="Publishers on the left and advertisers on the right, all connected through one ad network in the middle">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="var(--muted)"/></marker></defs>
+      <text x="90" y="22" text-anchor="middle" font-weight="700" font-size="15">Publishers</text>
+      <text x="670" y="22" text-anchor="middle" font-weight="700" font-size="15">Advertisers</text>
+      <text x="90" y="40" text-anchor="middle" font-size="12" style="fill:var(--muted)">sell ad space</text>
+      <text x="670" y="40" text-anchor="middle" font-size="12" style="fill:var(--muted)">buy attention</text>
+      <g id="pubs"></g><g id="advs"></g>
+      <rect x="300" y="105" width="160" height="56" rx="12" fill="var(--accent)"/>
+      <text x="380" y="131" text-anchor="middle" font-weight="700" font-size="16" style="fill:#fff">Ad Network</text>
+      <text x="380" y="150" text-anchor="middle" font-size="12" style="fill:#fff;opacity:.85">runs the auction</text>
+    </svg>
+  </div>
+  <div class="key">Without the network, every advertiser would need a separate deal with every website. Ask yourself: which side pays for the free news site you read this morning?</div>
+</div></section>
+
+<!-- BIDS -->
+<section id="bids"><div class="wrap">
+  <h2>Display ad bids</h2>
+  <p class="sub">Three ways to pay. They all convert into each other once you know the click-through rate (CTR) and conversion rate.</p>
+  <div class="grid3">
+    <div class="card"><span class="pill">CPM</span><h3>Cost per mille</h3><p style="margin:0;color:var(--ink-2)">Pay per 1,000 impressions. You carry the risk that nobody clicks.</p></div>
+    <div class="card"><span class="pill">CPC</span><h3>Cost per click</h3><p style="margin:0;color:var(--ink-2)">Pay only when someone clicks. The risk is in whether they buy.</p></div>
+    <div class="card"><span class="pill">CPA</span><h3>Cost per acquisition</h3><p style="margin:0;color:var(--ink-2)">Pay per conversion. The cost that matters for profit.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="formula">CPC = CPM ÷ (1,000 × CTR)</div>
+    <div class="formula">CPA = CPC ÷ Conversion rate</div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h3>Bid calculator</h3>
+    <p style="margin:0 0 14px;color:var(--ink-2);font-size:15px">The numbers below are from the chapter exercise. Move the CPM slider or edit any input. Then compare each CPA with its profit per conversion.</p>
+    <div class="cpm-row">
+      <label for="cpm" style="font-weight:600">CPM bid</label>
+      <input type="range" id="cpm" min="0.5" max="30" step="0.25" value="20">
+      <span class="cpm-val" id="cpmVal">$20.00</span>
+      <button class="btn" id="resetBids">Reset</button>
+    </div>
+    <div class="calc">
+      <table class="bids" id="bidTable">
+        <thead><tr><th></th><th>Advertiser 1</th><th>Advertiser 2</th><th>Advertiser 3</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="key" id="bidInsight"></div>
+  </div>
+</div></section>
+
+<!-- TARGETING -->
+<section id="targeting"><div class="wrap">
+  <h2>Display ad targeting</h2>
+  <p class="sub">Google Ads lets you choose who sees an ad. Affinity tells you who someone <em>is</em>. In-market tells you what they're about to <em>buy</em>.</p>
+  <div class="grid3">
+    <div class="card tgt"><h3>Demographics</h3><p>Age, gender, parental status, household income.</p><div class="eg">e.g. parents of toddlers</div></div>
+    <div class="card tgt"><h3>Affinity</h3><p>Long-term interests and habits. Best for building awareness.</p><div class="eg">e.g. golf enthusiasts</div></div>
+    <div class="card tgt"><h3>In-market</h3><p>People actively researching a purchase right now.</p><div class="eg">e.g. in-market for SUVs</div></div>
+    <div class="card tgt"><h3>Life events</h3><p>Major moments that change what people buy.</p><div class="eg">e.g. recently moved, getting married</div></div>
+    <div class="card tgt"><h3>Your data</h3><p>Past site visitors and your customer lists. This is retargeting.</p><div class="eg">e.g. abandoned a cart last week</div></div>
+    <div class="card tgt"><h3>Custom segments</h3><p>You define the audience with keywords, URLs or apps.</p><div class="eg">e.g. people who search "standing desk"</div></div>
+    <div class="card tgt"><h3>Combined segments</h3><p>Mix segments with AND / OR logic.</p><div class="eg">e.g. in-market for cars AND parents</div></div>
+  </div>
+  <div class="update"><b>Update:</b> Google retired "similar segments" in 2023. Optimized targeting and audience expansion now find people who resemble your customers. Category names in Google Ads change often, so check the live menu.</div>
+</div></section>
+
+<!-- COPY -->
+<section id="copy"><div class="wrap">
+  <h2>What makes a display ad work</h2>
+  <p class="sub">The consumer has to get through four steps, and each step loses people. Good ad copy keeps as many as possible moving.</p>
+  <div class="grid2">
+    <div class="card">
+      <h3>The four steps</h3>
+      <div class="funnel" style="margin-top:12px">
+        <div style="width:100%">1 · See the ad</div>
+        <div style="width:86%">2 · Process the ad</div>
+        <div style="width:72%">3 · Decide to click</div>
+        <div style="width:58%">4 · Convert</div>
+      </div>
+      <p style="font-size:14px;color:var(--muted);margin:12px 0 0">Watch for "banner blindness": people learn to ignore spots where ads usually appear.</p>
+    </div>
+    <div class="card">
+      <h3>Score an ad</h3>
+      <p style="margin:0;color:var(--ink-2);font-size:15px">Find a display ad on a site you read today. Rate it 1–5 on each guideline.</p>
+      <div id="rubric"></div>
+      <div class="verdict" id="verdict">Rate all three to see a verdict.</div>
+    </div>
+  </div>
+  <div class="key">If you can't name the value proposition in five words, the ad doesn't have one.</div>
+</div></section>
+
+<!-- RETARGETING -->
+<section id="retargeting"><div class="wrap">
+  <h2>Retargeting: does specific beat generic?</h2>
+  <p class="sub"><b>Dynamic retargeting</b> shows you the exact product you viewed. <b>Generic retargeting</b> shows a brand ad. Lambrecht and Tucker (2013) tested both with a travel site, assigning visitors at random to see one or the other.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="toggle" id="rtToggle">
+        <button class="on" data-v="all">Overall</button>
+        <button data-v="split">By review-site visit</button>
+      </div>
+      <div id="rtChart"></div>
+      <div class="legend"><span><i style="background:var(--bar-a)"></i>Generic ad</span><span><i style="background:var(--bar-b)"></i>Dynamic ad</span></div>
+      <p style="font-size:12px;color:var(--muted);margin:8px 0 0">Approximate values read from the published charts.</p>
+    </div>
+    <div class="card" id="rtExplain"></div>
+  </div>
+
+  <h3 style="margin-top:28px">Broad vs. narrow construal</h3>
+  <div class="grid2" style="margin-top:10px">
+    <div class="card">
+      <div class="thought">"Beach vacation."</div>
+      <p style="margin:12px 0 0;color:var(--ink-2)"><b>Early in the decision:</b> thinking is broad. A broad, inspiring ad matches.</p>
+    </div>
+    <div class="card">
+      <div class="thought">"A hotel on the north side of the island with direct beach access and a pool that overlooks the waves."</div>
+      <p style="margin:12px 0 0;color:var(--ink-2)"><b>Late in the decision:</b> thinking is narrow. A specific, product-level ad matches.</p>
+    </div>
+  </div>
+  <div class="key">Match the ad's level of detail to the customer's level of detail.</div>
+
+  <h3 style="margin-top:28px">Similar audiences</h3>
+  <div class="grid2" style="margin-top:10px;align-items:center">
+    <div class="card">
+      <svg viewBox="0 0 400 230" role="img" aria-label="Two overlapping circles: people exposed to our ads, and potential customers. The overlap is current customers.">
+        <circle cx="145" cy="120" r="95" fill="var(--bar-a)" fill-opacity=".25" stroke="var(--bar-a)"/>
+        <circle cx="255" cy="120" r="95" fill="#9b5de5" fill-opacity=".2" stroke="#9b5de5"/>
+        <text x="95" y="18" text-anchor="middle" font-size="12" font-weight="600">Saw our ads</text>
+        <text x="305" y="18" text-anchor="middle" font-size="12" font-weight="600">Potential customers</text>
+        <text x="100" y="125" text-anchor="middle" font-size="13" font-weight="700">Blue</text>
+        <text x="100" y="142" text-anchor="middle" font-size="11" style="fill:var(--muted)">saw it, didn't buy</text>
+        <text x="200" y="125" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--good)">Green</text>
+        <text x="200" y="142" text-anchor="middle" font-size="11" style="fill:var(--muted)">bought</text>
+        <text x="300" y="125" text-anchor="middle" font-size="13" font-weight="700" style="fill:#9b5de5">Purple</text>
+        <text x="300" y="142" text-anchor="middle" font-size="11" style="fill:var(--muted)">not reached yet</text>
+      </svg>
+    </div>
+    <div>
+      <p style="margin-top:0">The only difference between green and purple people is <b>ad exposure</b>. Green people show you what a buyer looks like.</p>
+      <div class="key" style="margin-top:0">Spend on purple people who resemble green people, not on more impressions to blue people who already said no.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- EFFECTIVENESS -->
+<section id="effectiveness"><div class="wrap">
+  <h2>Relevant or loud. Not both.</h2>
+  <p class="sub">Goldfarb and Tucker (2011) measured two ways to make banner ads work harder: <b>context matching</b> (a car ad on a car site) and <b>obtrusiveness</b> (pop-ups, video, takeovers). Results are shown as the extra spending a plain ad would need to match the effect.</p>
+  <div class="card">
+    <div class="matrix">
+      <div></div><div class="h">Not obtrusive</div><div class="h">Obtrusive</div>
+      <div class="h">Not matched</div>
+      <div class="c base">Baseline<small>plain ad, unrelated site</small></div>
+      <div class="c up">≈ +75%<small>as if spending 75% more</small></div>
+      <div class="h">Context matched</div>
+      <div class="c up">≈ +50%<small>as if spending 50% more</small></div>
+      <div class="c zero">≈ 0%<small>the gains cancel out</small></div>
+    </div>
+  </div>
+  <div class="key">An ad that is targeted <em>and</em> in your face feels manipulative, and people push back. The effect was strongest for privacy-sensitive products.</div>
+</div></section>
+
+<!-- MESSAGING -->
+<section id="messaging"><div class="wrap">
+  <h2>Consistent messaging</h2>
+  <div class="acronym" aria-hidden="true"><span>N</span><span>S</span><span>A</span><span>M</span><span>C</span><span>W</span><span>A</span><span>D</span><span>L</span><span>P</span></div>
+  <p class="acronym-words"><b>N</b>ever <b>S</b>tart <b>A</b> <b>M</b>arketing <b>C</b>ampaign <b>W</b>ithout <b>A</b> <b>D</b>edicated <b>L</b>anding <b>P</b>age.</p>
+  <p class="sub">The landing page's first job is to tell the visitor, "Yes, you're in the right place." Route each click to the page that matches what the person clicked on: a logo goes to the brand page, a specific product goes to that product.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Practice: check a landing page</h3>
+      <p style="margin:0 0 12px;color:var(--ink-2);font-size:15px">Here's a made-up ad. Imagine the landing page, then check off what it must repeat.</p>
+      <div class="mock-ad">
+        <div class="tag">Coastline Hotels · Ad</div>
+        <div class="big">Fall getaways<br>20% off for members</div>
+        <div class="cta">Book now</div>
+      </div>
+      <div style="margin-top:12px" id="checklist"></div>
+      <div class="verdict" id="checkVerdict"></div>
+    </div>
+    <div class="card">
+      <h3>Three things to match</h3>
+      <div class="check"><span>1</span><div><b>Same value proposition.</b> If the ad says "works offline," the page leads with working offline.</div></div>
+      <div class="check"><span>2</span><div><b>Same call to action.</b> "Book now" in the ad means a booking box on the page.</div></div>
+      <div class="check"><span>3</span><div><b>Same design.</b> Colors, fonts, characters, imagery.</div></div>
+      <details><summary>Case: the laptop ad that matched the look but not the message</summary><div>The ad promised getting work done without Wi-Fi. The landing page matched the colors, logo placement and clean layout, but the headline was a general "it does everything" message. The offline benefit, the reason people clicked, was missing.</div></details>
+      <details><summary>Case: the hotel ad that matched almost everything</summary><div>An animated hotel ad used a "summer isn't over" headline, a 15% member discount and a "Book now" button. The landing page repeated the headline lettering, the discount, the member requirement and a booking box. Only a decorative sun was missing, which matters far less than the message and offer.</div></details>
+    </div>
+  </div>
+</div></section>
+
+<!-- AUDIENCES -->
+<section id="audiences"><div class="wrap">
+  <h2>Exploring affinity audiences</h2>
+  <p class="sub">Affinity segments go several levels deep. The deeper you go, the smaller and more specific the audience. Use interests to find a <em>type</em> of customer, not just a fan of the topic.</p>
+  <div class="tabs" id="audTabs"></div>
+  <div class="grid2">
+    <div class="card tree" id="audTree"></div>
+    <div class="card" id="audIdea"></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px">Category lists reflect the chapter's screenshots. Google updates them regularly.</p>
+</div></section>
+
+<!-- QUIZ -->
+<section id="quiz"><div class="wrap">
+  <h2>Check your understanding</h2>
+  <p class="sub">Eight questions. Pick an answer to see the explanation.</p>
+  <div class="card" id="quizBox"></div>
+  <div class="card" style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <span class="score" id="score">Score: 0 / 8</span>
+    <button class="btn" id="quizReset">Start over</button>
+  </div>
+</div></section>
+
+<!-- TERMS -->
+<section id="terms"><div class="wrap">
+  <h2>Key terms</h2>
+  <dl class="terms">
+    <div><dt>Publisher</dt><dd>A site or app that sells ad space.</dd></div>
+    <div><dt>Ad network</dt><dd>The marketplace connecting publishers and advertisers and running the auctions.</dd></div>
+    <div><dt>CPM / CPC / CPA</dt><dd>Cost per thousand impressions, per click and per acquisition.</dd></div>
+    <div><dt>CTR</dt><dd>Click-through rate: clicks ÷ impressions.</dd></div>
+    <div><dt>Break-even CPM</dt><dd>1,000 × CTR × conversion rate × profit per conversion. Bid above it and you lose money.</dd></div>
+    <div><dt>Affinity audience</dt><dd>People grouped by long-term interests and habits.</dd></div>
+    <div><dt>In-market audience</dt><dd>People actively researching a purchase.</dd></div>
+    <div><dt>Retargeting</dt><dd>Showing ads to people who already visited your site.</dd></div>
+    <div><dt>Dynamic retargeting</dt><dd>Retargeting with the specific product the person viewed.</dd></div>
+    <div><dt>Construal level</dt><dd>How broad or specific someone's thinking is at a point in their decision.</dd></div>
+    <div><dt>Obtrusive ad</dt><dd>An ad that interrupts: pop-ups, auto-play video, page takeovers.</dd></div>
+    <div><dt>Landing page</dt><dd>The page a visitor reaches after clicking an ad; it should continue the ad's message.</dd></div>
+  </dl>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  Chapter 7 study companion · Digital Marketing.
+  Research cited: Lambrecht &amp; Tucker (2013), "When Does Retargeting Work?", <i>Journal of Marketing Research</i>; Goldfarb &amp; Tucker (2011), "Online Display Advertising: Targeting and Obtrusiveness", <i>Marketing Science</i>.
+</div></footer>
+
+<script>
+(function(){
+  // Theme toggle
+  const root=document.documentElement, tb=document.getElementById('themeBtn');
+  try{const s=localStorage.getItem('ch7-theme'); if(s) root.setAttribute('data-theme',s);}catch(e){}
+  tb.addEventListener('click',()=>{
+    const cur=root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    const nx=cur==='dark'?'light':'dark'; root.setAttribute('data-theme',nx);
+    try{localStorage.setItem('ch7-theme',nx);}catch(e){}
+  });
+
+  // Network diagram
+  const pubs=document.getElementById('pubs'), advs=document.getElementById('advs'), NS='http://www.w3.org/2000/svg';
+  function box(g,x,y,lbl){
+    const r=document.createElementNS(NS,'rect'); r.setAttribute('x',x);r.setAttribute('y',y);r.setAttribute('width',130);r.setAttribute('height',30);r.setAttribute('rx',7);
+    r.setAttribute('fill','var(--surface-2)');r.setAttribute('stroke','var(--line)'); g.appendChild(r);
+    const t=document.createElementNS(NS,'text');t.setAttribute('x',x+65);t.setAttribute('y',y+20);t.setAttribute('text-anchor','middle');t.setAttribute('font-size','12');t.textContent=lbl;g.appendChild(t);
+  }
+  function line(g,x1,y1,x2,y2){const l=document.createElementNS(NS,'line');l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);l.setAttribute('stroke','var(--muted)');l.setAttribute('stroke-width','1.2');l.setAttribute('marker-end','url(#ar)');g.appendChild(l);}
+  ['News site','Recipe blog','Sports app','Weather site','Video channel'].forEach((p,i)=>{const y=56+i*40; line(pubs,300,133,157,y+15); box(pubs,25,y,p);});
+  ['Shoe brand','Hotel chain','Wallet maker','Mattress co.','Software firm'].forEach((p,i)=>{const y=56+i*40; line(advs,605,y+15,462,133); box(advs,605,y,p);});
+
+  // Bid calculator
+  const DEF=[{ctr:0.8,cr:2.3,profit:15},{ctr:0.7,cr:3.1,profit:20},{ctr:0.6,cr:1.9,profit:30}];
+  let adv=JSON.parse(JSON.stringify(DEF));
+  const cpmEl=document.getElementById('cpm'), cpmVal=document.getElementById('cpmVal'), tbody=document.querySelector('#bidTable tbody'), insight=document.getElementById('bidInsight');
+  const $=n=>'$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  function inputRow(label,key,suffix){
+    let h='<tr><td>'+label+'</td>';
+    adv.forEach((a,i)=>{h+='<td>'+(suffix==='$'?'$ ':'')+'<input type="number" step="0.1" min="0" data-i="'+i+'" data-k="'+key+'" value="'+a[key]+'" aria-label="'+label+' advertiser '+(i+1)+'">'+(suffix==='%'?' %':'')+'</td>';});
+    return h+'</tr>';
+  }
+  function render(){
+    const cpm=+cpmEl.value; cpmVal.textContent=$(cpm);
+    let h=inputRow('CTR','ctr','%')+inputRow('Conversion rate','cr','%')+inputRow('Profit per conversion','profit','$');
+    const rows={cpc:[],cpa:[],net:[],be:[]};
+    adv.forEach(a=>{
+      const ctr=a.ctr/100, cr=a.cr/100;
+      const cpc=ctr>0?cpm/(1000*ctr):Infinity, cpa=cr>0?cpc/cr:Infinity;
+      rows.cpc.push(cpc); rows.cpa.push(cpa); rows.net.push(a.profit-cpa); rows.be.push(1000*ctr*cr*a.profit);
+    });
+    const fmt=v=>isFinite(v)?$(v):'—';
+    h+='<tr class="out"><td>CPC</td>'+rows.cpc.map(v=>'<td>'+fmt(v)+'</td>').join('')+'</tr>';
+    h+='<tr class="out"><td>CPA</td>'+rows.cpa.map(v=>'<td>'+fmt(v)+'</td>').join('')+'</tr>';
+    h+='<tr class="out"><td>Profit after ad cost, per sale</td>'+rows.net.map(v=>'<td><span class="badge '+(v>=0?'pos':'neg')+'">'+(isFinite(v)?(v<0?'−':'')+$(Math.abs(v)):'—')+'</span></td>').join('')+'</tr>';
+    h+='<tr class="out"><td>Break-even CPM</td>'+rows.be.map(v=>'<td>'+$(v)+'</td>').join('')+'</tr>';
+    tbody.innerHTML=h;
+    tbody.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',e=>{adv[+e.target.dataset.i][e.target.dataset.k]=Math.max(0,+e.target.value||0);render();}));
+    const winners=rows.net.filter(v=>v>=0).length;
+    const bestBE=rows.be.indexOf(Math.max(...rows.be));
+    const bestProfit=adv.map(a=>a.profit).indexOf(Math.max(...adv.map(a=>a.profit)));
+    let msg = winners===0 ? 'At '+$(cpm)+' CPM, every advertiser pays more per sale than the sale is worth. ' : winners+' of 3 advertisers profit at '+$(cpm)+' CPM. ';
+    msg += 'Advertiser '+(bestBE+1)+' can afford the highest bid ('+$(rows.be[bestBE])+' CPM)';
+    msg += bestBE!==bestProfit ? ', even though Advertiser '+(bestProfit+1)+' earns more per sale. The ad that converts best wins the auction, not the one with the biggest margin.' : '.';
+    insight.textContent=msg;
+  }
+  cpmEl.addEventListener('input',render);
+  document.getElementById('resetBids').addEventListener('click',()=>{adv=JSON.parse(JSON.stringify(DEF));cpmEl.value=20;render();});
+  render();
+
+  // Rubric
+  const crit=['Attract attention','Communicate the value proposition','Invite action'], scores=[0,0,0], rub=document.getElementById('rubric');
+  crit.forEach((c,i)=>{
+    const row=document.createElement('div');row.className='rubric-row';
+    row.innerHTML='<span>'+(i+1)+'. '+c+'</span><div class="stars">'+[1,2,3,4,5].map(n=>'<button aria-label="'+c+' '+n+'" data-i="'+i+'" data-n="'+n+'">'+n+'</button>').join('')+'</div>';
+    rub.appendChild(row);
+  });
+  rub.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    const i=+b.dataset.i,n=+b.dataset.n; scores[i]=n;
+    rub.querySelectorAll('button[data-i="'+i+'"]').forEach(x=>x.classList.toggle('on',+x.dataset.n<=n));
+    const v=document.getElementById('verdict');
+    if(scores.includes(0)){v.textContent='Rate all three to see a verdict.';return;}
+    const lo=scores.indexOf(Math.min(...scores)), tot=scores.reduce((a,b)=>a+b,0);
+    v.textContent='Total '+tot+'/15. '+(tot>=12?'Strong ad. ':tot>=8?'Decent, with a clear weak spot. ':'This ad loses most people early. ')+'Fix first: '+crit[lo].toLowerCase()+'.';
+  });
+
+  // Retargeting chart
+  const DATA={all:{groups:[{l:'All visitors',g:0.0166,d:0.0103}],max:0.02},split:{groups:[{l:'Before review site',g:0.074,d:0.050},{l:'After review site',g:0.016,d:0.040}],max:0.08}};
+  const EXPL={
+    all:'<h3>The surprise</h3><p style="color:var(--ink-2)">Overall, the generic ad converted at about <b>1.7%</b> and the dynamic ad at about <b>1.0%</b>. The more personal ad did <b>worse</b>.</p><p style="color:var(--ink-2)">Why would showing someone the exact hotel they looked at hurt? Switch to the split view.</p>',
+    split:'<h3>It depends on where they are</h3><p style="color:var(--ink-2)">Before visiting a review site like TripAdvisor, people were still deciding <i>where</i> to go, and the generic ad won (~7% vs. ~5%).</p><p style="color:var(--ink-2)">After a review site, they were choosing <i>which hotel</i>, and the dynamic ad won (~4% vs. under 2%).</p><p style="margin-bottom:0"><b>The ad didn\'t change. The customer\'s stage in the decision did.</b></p>'
+  };
+  const rtChart=document.getElementById('rtChart'), rtEx=document.getElementById('rtExplain');
+  function drawRT(v){
+    const d=DATA[v], W=420,H=240,pl=44,pb=40,pt=14, ch=H-pb-pt, gw=(W-pl-10)/d.groups.length;
+    let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Bar chart of conversion probability for generic and dynamic retargeted ads">';
+    for(let k=0;k<=4;k++){const val=d.max*k/4,y=pt+ch-ch*k/4; s+='<line x1="'+pl+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(pl-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" style="fill:var(--muted)">'+(val*100).toFixed(val*100%1?1:0)+'%</text>';}
+    d.groups.forEach((g,i)=>{
+      const cx=pl+gw*i+gw/2, bw=Math.min(56,gw/3.2);
+      [['g','var(--bar-a)',-1],['d','var(--bar-b)',1]].forEach(([k,c,dir])=>{
+        const h=ch*g[k]/d.max, x=cx+(dir<0?-bw-4:4), y=pt+ch-h;
+        s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+h+'" rx="4" fill="'+c+'"><title>'+(k==='g'?'Generic':'Dynamic')+': '+(g[k]*100).toFixed(1)+'%</title></rect>';
+        s+='<text x="'+(x+bw/2)+'" y="'+(y-5)+'" text-anchor="middle" font-size="12" font-weight="700">'+(g[k]*100).toFixed(1)+'%</text>';
+      });
+      s+='<text x="'+cx+'" y="'+(H-14)+'" text-anchor="middle" font-size="12" font-weight="600">'+g.l+'</text>';
+    });
+    rtChart.innerHTML=s+'</svg>'; rtEx.innerHTML=EXPL[v];
+  }
+  document.getElementById('rtToggle').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#rtToggle button').forEach(x=>x.classList.toggle('on',x===b));drawRT(b.dataset.v);});
+  drawRT('all');
+
+  // Checklist
+  const items=[['Coastline Hotels logo and colors',true],['"Fall getaways" headline',true],['20% member discount, with how to join',true],['A booking box near the top',true],['A list of every hotel the company owns',false],['The company history page',false]];
+  const cl=document.getElementById('checklist');
+  items.forEach((it,i)=>{const d=document.createElement('label');d.className='check';d.innerHTML='<input type="checkbox" data-i="'+i+'"><span>'+it[0]+'</span>';cl.appendChild(d);});
+  cl.addEventListener('change',()=>{
+    let right=0,wrong=0; cl.querySelectorAll('input').forEach(c=>{const ok=items[+c.dataset.i][1]; if(c.checked&&ok)right++; if(c.checked&&!ok)wrong++;});
+    const v=document.getElementById('checkVerdict');
+    v.textContent = wrong ? 'Something you checked would distract from the ad\'s promise. Keep the page focused.' : right===4 ? 'Exactly right: logo and colors, headline, offer and call to action.' : right+' of 4 must-haves checked.';
+    v.style.color = wrong ? 'var(--bad)' : right===4 ? 'var(--good)' : 'var(--ink-2)';
+  });
+
+  // Audiences
+  const AUD={
+    'Lifestyles & Hobbies':{list:['Art & Theater Aficionados','Business Professionals','Family-Focused','Fashionistas','Frequently Attends Live Events','Green Living Enthusiasts','Nightlife Enthusiasts','Outdoor Enthusiasts','Pet Lovers','Shutterbugs','Thrill Seekers'],idea:'<h3>Think past the obvious</h3><p style="color:var(--ink-2)">"Pet Lovers" for a pet store is obvious. "Pet Lovers" for a robot vacuum or a pet-friendly apartment complex is smarter.</p>'},
+    'Media & Entertainment':{list:['Book Lovers','Comics & Animation Fans','Gamers','Light TV Viewers',{n:'Movie Lovers',c:['Action & Adventure Movie Fans','Comedy Movie Fans','Family Movie Fans','Horror Movie Fans','Romance & Drama Movie Fans','Sci-Fi & Fantasy Movie Fans','South Asian Film Fans']},'Music Lovers','TV Lovers'],idea:'<h3>Deeper = smaller and sharper</h3><p style="color:var(--ink-2)">Media & Entertainment → Movie Lovers → Horror Movie Fans. A local theater promoting a horror double feature could target exactly this, paying more per person but wasting less.</p>'},
+    'Shoppers':{list:['Bargain Hunters','Luxury Shoppers','Shopaholics',{n:'Shoppers by Store Type',c:['Convenience Store Shoppers','Department Store Shoppers','Superstore Shoppers']},'Value Shoppers'],idea:'<h3>Behavior predicts behavior</h3><p style="color:var(--ink-2)">These segments are built from actual shopping behavior, which makes them strong predictors of what people will buy next.</p><p style="color:var(--ink-2)">Try it: write one headline for Bargain Hunters and one for Luxury Shoppers, selling the same product.</p>'},
+    'Sports & Fitness':{list:['Health & Fitness Buffs',{n:'Sports Fans',c:['American Football Fans','Baseball Fans','Basketball Fans','Boating & Sailing Enthusiasts','Cycling Enthusiasts','Fight & Wrestling Fans','Golf Enthusiasts','Hockey Fans','Motor Sports Enthusiasts','Running Enthusiasts','Skiing Enthusiasts','Soccer Fans','Swimming Enthusiasts','Tennis Enthusiasts','Water Sports Enthusiasts','Winter Sports Enthusiasts']}],idea:'<h3>Interests as a stand-in</h3><p style="color:var(--ink-2)">Baseball Fans for a memorabilia shop is obvious. But tennis and golf enthusiasts tend to be wealthier, so a luxury watch or car brand might target them too.</p><p style="margin-bottom:0"><b>Use interests to find a type of customer, not just a fan of the sport.</b></p>'}
+  };
+  const tabs=document.getElementById('audTabs'), tree=document.getElementById('audTree'), idea=document.getElementById('audIdea');
+  function li(x){return typeof x==='string'?'<li>'+x+'</li>':'<li class="cat"><span>'+x.n+'</span><ul>'+x.c.map(li).join('')+'</ul></li>';}
+  function showAud(k){tree.innerHTML='<ul><li class="cat"><span>'+k+'</span><ul>'+AUD[k].list.map(li).join('')+'</ul></li></ul>';idea.innerHTML=AUD[k].idea;tabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));}
+  Object.keys(AUD).forEach(k=>{const b=document.createElement('button');b.textContent=k;b.dataset.k=k;b.onclick=()=>showAud(k);tabs.appendChild(b);});
+  showAud('Lifestyles & Hobbies');
+
+  // Quiz
+  const Q=[
+    {q:'In an ad network, who sells ad space?',o:['Advertisers','Publishers','The search engine only','Consumers'],a:1,w:'Publishers (websites, apps, video channels) sell space. Advertisers buy it. The network connects them.'},
+    {q:'An ad has a $10 CPM and a 0.5% CTR. What is the CPC?',o:['$0.50','$2.00','$5.00','$20.00'],a:1,w:'CPC = CPM ÷ (1,000 × CTR) = $10 ÷ 5 = $2.00.'},
+    {q:'That same ad converts 4% of clicks. What is the CPA?',o:['$8','$20','$50','$80'],a:2,w:'CPA = CPC ÷ conversion rate = $2.00 ÷ 0.04 = $50.'},
+    {q:'Which audience type targets people actively researching a purchase?',o:['Affinity','Demographics','In-market','Custom combined'],a:2,w:'In-market segments signal near-term purchase intent. Affinity reflects long-term interests.'},
+    {q:'In Lambrecht and Tucker\'s study, when did dynamic retargeting beat generic?',o:['Always','Never','After the visitor had used a review site','Only on mobile'],a:2,w:'After a review-site visit, people had narrowed to specific hotels, so the specific ad matched their thinking.'},
+    {q:'Goldfarb and Tucker found that combining context matching with an obtrusive format…',o:['Doubled effectiveness','Added the two effects together','Produced little or no gain','Only worked for luxury goods'],a:2,w:'Targeted and intrusive together felt manipulative, so the gains canceled out.'},
+    {q:'What does NSAMCWADLP stand for?',o:['Never Start A Marketing Campaign Without A Dedicated Landing Page','New Sites Always Make Customers Want A Direct Link Path','Never Stop A Media Campaign While Ads Drive Leads Profitably','None of these'],a:0,w:'Sending ad clicks to a homepage makes visitors start their search over.'},
+    {q:'A landing page matches the ad\'s colors and logo but not its headline promise. What is the likely result?',o:['No problem; design is what matters','Visitors feel they\'re in the wrong place and leave','Higher Quality Score','Lower CPM'],a:1,w:'People click for the message. Matching the look without the message still breaks continuity.'}
+  ];
+  const qb=document.getElementById('quizBox'); let correct=0;
+  function buildQuiz(){
+    correct=0; document.getElementById('score').textContent='Score: 0 / '+Q.length;
+    qb.innerHTML=Q.map((x,i)=>'<div class="q"><p>'+(i+1)+'. '+x.q+'</p><div class="opts">'+x.o.map((o,j)=>'<button data-q="'+i+'" data-j="'+j+'">'+o+'</button>').join('')+'</div><div class="why" id="why'+i+'">'+x.w+'</div></div>').join('');
+  }
+  qb.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b||b.disabled) return;
+    const i=+b.dataset.q,j=+b.dataset.j, btns=qb.querySelectorAll('button[data-q="'+i+'"]');
+    btns.forEach(x=>{x.disabled=true; if(+x.dataset.j===Q[i].a) x.classList.add('right');});
+    if(j===Q[i].a) correct++; else b.classList.add('wrong');
+    document.getElementById('why'+i).style.display='block';
+    document.getElementById('score').textContent='Score: '+correct+' / '+Q.length;
+  });
+  document.getElementById('quizReset').addEventListener('click',buildQuiz);
+  buildQuiz();
+
+  // Active nav
+  const links=[...document.querySelectorAll('#toc a')];
+  const obs=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id));}}),{rootMargin:'-40% 0px -55% 0px'});
+  links.forEach(a=>{const s=document.querySelector(a.getAttribute('href')); if(s) obs.observe(s);});
+})();
+</script>
+</body>
+</html>
